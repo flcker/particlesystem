@@ -7,3 +7,4 @@ ipch
 *.opensdf
 externals/Simple OpenGL Image Library/projects/VC9/Debug/
 externals/Simple OpenGL Image Library/projects/VC9/Release/
+*.sdf
