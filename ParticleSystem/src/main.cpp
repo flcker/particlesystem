@@ -53,7 +53,8 @@ int main( int argc, char* argv[] )
     g_Camera.SetRotate( g_DefaultCameraRotate );
     g_Camera.SetPivot( g_DefaultCameraPivot );
 
-    if ( g_ParticleEffect.LoadTexture( "Data/Textures/Particle-Texture.png" ) )
+    //if ( g_ParticleEffect.LoadTexture( "Data/Textures/Particle-Texture.png" ) )
+	if (g_ParticleEffect.LoadTexture("Data/Textures/xxx.png"))
     {
         std::cout << "Successfully loaded particle texture." << std::endl;
     }
@@ -63,17 +64,18 @@ int main( int argc, char* argv[] )
     }
     ParticleEffect::ColorInterpolator colors;
 
-    colors.AddValue(0.0f,  glm::vec4(1, 0, 0, 1) );     // red
-    colors.AddValue(0.15f, glm::vec4(1, 0, 1, 1) );     // magenta
-    colors.AddValue(0.33f, glm::vec4(0, 0, 1, 1) );     // blue
-    colors.AddValue(0.5f,  glm::vec4(0, 1, 1, 1) );     // cyan
-    colors.AddValue(0.67f, glm::vec4(0, 1, 0, 0.75) );  // green
-    colors.AddValue(0.84f, glm::vec4(1, 1, 0, 0.5) );   // yellow
-    colors.AddValue(1.0f,  glm::vec4(1, 0, 0, 0) );     // red
+    //colors.AddValue(0.0f,  glm::vec4(1, 0, 0, 1) );     // red
+    //colors.AddValue(0.15f, glm::vec4(1, 0, 1, 1) );     // magenta
+    //colors.AddValue(0.33f, glm::vec4(0, 0, 1, 1) );     // blue
+    //colors.AddValue(0.5f,  glm::vec4(0, 1, 1, 1) );     // cyan
+    //colors.AddValue(0.67f, glm::vec4(0, 1, 0, 0.75) );  // green
+    //colors.AddValue(0.84f, glm::vec4(1, 1, 0, 0.5) );   // yellow
+    //colors.AddValue(1.0f,  glm::vec4(1, 0, 0, 0) );     // red
 
     g_ParticleEffect.SetColorInterplator( colors );
 
     g_ParticleEffect.SetParticleEmitter( &g_ParticleEmitter );
+	//g_ParticleEffect.SetParticleEmitter(&g_CubeEmitter);
     g_ParticleEffect.EmitParticles();
     g_ParticleEffect.SetCamera( &g_Camera );
 
@@ -135,20 +137,22 @@ void DrawAxis( float fScale, glm::vec3 translate = glm::vec3(0) )
     glTranslatef( translate.x, translate.y, translate.z );
     glScalef( fScale, fScale, fScale );
     glColor3f( 0.0f, 0.0f, 1.0f );
+	glLineWidth(2.50f);
 
     glBegin( GL_LINES );
     {
+		// x axis 
         glColor3f( 1.0f, 0.0f, 0.0f );
         glVertex3f( 0.0f, 0.0f, 0.0 );
-        glVertex3f( 1.0f, 0.0f, 0.0f );
-
+        glVertex3f( 3.0f, 0.0f, 0.0f );
+		// y axis
         glColor3f( 0.0f, 1.0f, 0.0f );
         glVertex3f( 0.0f, 0.0f, 0.0f );
-        glVertex3f( 0.0f, 1.0f, 0.0f );
-
+        glVertex3f( 0.0f, 3.0f, 0.0f );
+		// z axis
         glColor3f( 0.0f, 0.0f, 1.0f );
         glVertex3f( 0.0f, 0.0f, 0.0f );
-        glVertex3f( 0.0f, 0.0f, 1.0f );
+        glVertex3f( 0.0f, 0.0f, 3.0f );
     }
     glEnd();
 
@@ -343,6 +347,7 @@ void MotionGL( int x, int y )
     if ( g_bLeftMouseDown && g_bRightMouseDown )
     {
         g_Camera.TranslateZ( g_MouseDelta.y );
+		//g_Camera.SetTranslate(glm::vec3(g_MouseDelta.x, g_MouseDelta.y, 0.0f));
     }
     else if ( g_bLeftMouseDown )
     {

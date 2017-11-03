@@ -144,26 +144,42 @@ void ParticleEffect::BuildVertexBuffer()
 
 void ParticleEffect::Update(float fDeltaTime)
 {
+	int AliveCount = 0;
     for ( unsigned int i = 0; i < m_Particles.size(); ++i )
     {
         Particle& particle = m_Particles[i];
 
         particle.m_fAge += fDeltaTime;
+
+#if ALWAYS_EMIT
         if ( particle.m_fAge > particle.m_fLifeTime )
         {
             if ( m_pParticleEmitter != NULL ) EmitParticle(particle);
             else RandomizeParticle(particle);
         }
+#else
+		if (particle.m_fAge > particle.m_fLifeTime)
+		{
+			AliveCount++;
+		}
+#endif
 
         float lifeRatio = glm::saturate(particle.m_fAge / particle.m_fLifeTime);
         particle.m_Velocity += ( m_Force * fDeltaTime );
         particle.m_Position += ( particle.m_Velocity * fDeltaTime );
-        particle.m_Color = m_ColorInterpolator.GetValue( lifeRatio );
+        //particle.m_Color = m_ColorInterpolator.GetValue( lifeRatio );
+		//particle.m_Color = glm::vec4(1.0f);
+		particle.m_Color = glm::vec4(1-lifeRatio,1 - lifeRatio,1 - lifeRatio, 1 - lifeRatio);
         particle.m_fRotate = glm::lerp<float>( 0.0f, 720.0f, lifeRatio );
         particle.m_fSize = glm::lerp<float>( 5.0f, 0.0f, lifeRatio );
     }
 
     BuildVertexBuffer();
+
+	if (AliveCount == m_Particles.size())
+	{
+		EmitParticles();
+	}
 }
 
 void ParticleEffect::Render()
